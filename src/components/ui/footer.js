@@ -1,5 +1,11 @@
 import React from "react"
-import { Grid, Typography, makeStyles, IconButton } from "@material-ui/core"
+import {
+  Grid,
+  Typography,
+  makeStyles,
+  IconButton,
+  useMediaQuery,
+} from "@material-ui/core"
 import { Link } from "gatsby"
 
 import facebook from "../../images/Icons/facebook.svg"
@@ -41,6 +47,8 @@ const useStyles = makeStyles(theme => ({
 export default function Footer() {
   const classes = useStyles()
 
+  const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+
   const socialMedia = [
     { icon: facebook, alt: "facebook", link: "https://facebook.com" },
     { icon: twitter, alt: "twitter", link: "https://twitter.com" },
@@ -64,7 +72,11 @@ export default function Footer() {
 
   return (
     <footer className={classes.footer}>
-      <Grid container justifyContent="space-between">
+      <Grid
+        container
+        direction={matchesMD ? "column" : "row"}
+        justifyContent="space-between"
+      >
         {/* Links */}
         <Grid item classes={{ root: classes.linkContainer }}>
           <Grid container>
@@ -100,7 +112,12 @@ export default function Footer() {
 
         {/* Social Media Icons */}
         <Grid item>
-          <Grid container direction="column" alignItems="center">
+          <Grid
+            container
+            direction={matchesMD ? "row" : "column"}
+            alignItems="center"
+            justifyContent="center"
+          >
             {socialMedia.map(platform => (
               <Grid item key={platform.alt}>
                 <IconButton

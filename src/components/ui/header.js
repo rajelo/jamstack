@@ -23,6 +23,11 @@ const useStyles = makeStyles(theme => ({
   coloredIndicator: {
     backgroundColor: theme.palette.common.offBlack,
   },
+  logo: {
+    [theme.breakpoints.down("xs")]: {
+      fontSize: '3rem',
+    },
+  },
   logoText: {
     color: theme.palette.common.offBlack,
   },
@@ -41,6 +46,10 @@ const useStyles = makeStyles(theme => ({
   icon: {
     height: "2.5rem",
     width: "2.5rem",
+    [theme.breakpoints.down('xs')]: {
+      height: '2rem',
+      width: '2rem'
+    }
   },
   drawer: {
     backgroundColor: theme.palette.primary.main,
@@ -53,6 +62,7 @@ const useStyles = makeStyles(theme => ({
 export default function Header({ categories }) {
   const classes = useStyles()
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+  const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
@@ -138,14 +148,14 @@ export default function Header({ categories }) {
 
   return (
     <AppBar color="transparent" elevation={0} position='static'>
-      <Toolbar>
+      <Toolbar disableGutters>
         <Button
           component={Link}
           to="/"
           classes={{ root: classes.logoContainer }}
         >
-          <Typography variant="h1">
-            <span className={classes.logoText}>VAR</span>X
+          <Typography variant="h1" classes={{root: classes.logo}}>
+            <span className={classes.logoText}>VAR</span> X
           </Typography>
         </Button>
         {matchesMD ? drawer : tabs}

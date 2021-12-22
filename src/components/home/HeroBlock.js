@@ -1,44 +1,79 @@
 import React from "react"
-import {Grid, Typography} from '@material-ui/core'
-import Lottie from 'react-lottie'
+import { Grid, Typography, useMediaQuery, makeStyles } from "@material-ui/core"
+import Lottie from "react-lottie"
 
-import animationData from '../../images/Icons/data.json'
+import animationData from "../../images/Icons/data.json"
+
+const useStyles = makeStyles(theme => ({
+  textContainer: {
+    padding: "2rem",
+  },
+  [theme.breakpoints.down('xs')]: {
+    fontSize: '1rem'
+  },
+  heading: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '3.5rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '3rem'
+    }
+  }
+}))
 
 export default function HeroBlock() {
-    const defaultOptions = {
-        loop: true,
-        autoplay: false,
-        animationData
-    }
 
-    return (
-        <Grid container justifyContent='space-around' alignItems='center' >
+  const classes = useStyles()
 
-            <Grid item>
-                <Grid container direction='column'>
+  const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
+  const matchesLG = useMediaQuery(theme => theme.breakpoints.down("lg"))
+  const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
 
-                    <Grid item>
-                        <Typography variant='h1' align='center'>
-                            The Premier
-                            <br />
-                            Developer Clothing Line
-                        </Typography>
-                    </Grid>
+  const defaultOptions = {
+    loop: true,
+    autoplay: false,
+    animationData,
+  }
 
-                    <Grid item>
-                        <Typography variant='h3' align='center'>
-                            high quality, custom-designed shirts, hats and hoodies
-                        </Typography>
-                    </Grid>
+  return (
+    <Grid container justifyContent="space-around" alignItems="center">
+      <Grid item classes={{ root: classes.textContainer }}>
+        <Grid container direction="column">
+          <Grid item>
+            <Typography
+              variant="h1"
+              align="center"
+              classes={{ root: classes.heading }}
+            >
+              The Premier
+              <br />
+              Developer Clothing Line
+            </Typography>
+          </Grid>
 
-
-                </Grid>
-            </Grid>
-
-            <Grid item>
-                <Lottie isStopped options={defaultOptions} width='30rem' /> {/* originally 50rem */}
-            </Grid>
-
+          <Grid item>
+            <Typography variant="h3" align="center">
+              high quality, custom-designed shirts, hats and hoodies
+            </Typography>
+          </Grid>
         </Grid>
-    )
+      </Grid>
+
+      <Grid item>
+        <Lottie
+          isStopped
+          options={defaultOptions}
+          width={
+            matchesXS
+              ? "20rem"
+              : matchesMD
+              ? "30rem"
+              : matchesLG
+              ? "40rem"
+              : "50rem"
+          }
+        />
+      </Grid>
+    </Grid>
+  )
 }

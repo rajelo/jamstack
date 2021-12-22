@@ -30,7 +30,7 @@ const theme = createTheme({
     typography: {
         h1: {
             // fontSize: "4.5rem", - original size
-            fontSize: "3.5rem",
+            fontSize: "4rem",
             fontFamily: "Philosopher",
             fontStyle: "italic",
             fontWeight: 700,

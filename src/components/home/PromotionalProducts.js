@@ -3,7 +3,7 @@ import { Grid, Typography, Button, IconButton } from "@material-ui/core"
 import Loadable from "@loadable/component"
 import clsx from "clsx" // to conditionally apply classnames - included in MUI
 import { useStaticQuery, graphql } from "gatsby"
-import { makeStyles } from "@material-ui/core"
+import { makeStyles, useMediaQuery } from "@material-ui/core"
 
 // background image
 import promoAdornment from "../../images/Icons/promo-adornment.svg"
@@ -20,10 +20,22 @@ const useStyles = makeStyles(theme => ({
     backgroundRepeat: "no-repeat",
     width: "100%",
     height: "70rem",
-    padding: "30rem 10rem 10rem",
+    padding: "30rem 10rem 10rem 10rem",
+    [theme.breakpoints.down('lg')]: {
+      padding: '20rem 2rem 2rem 2rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: '50rem',
+      overflow: 'hidden',
+      padding: '5rem 0 2rem'
+    }
+
   },
   productName: {
     color: "#fff",
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '3rem'
+    },
   },
   iconButton: {
     "&:hover": {
@@ -36,19 +48,49 @@ const useStyles = makeStyles(theme => ({
     backgroundColor: "#fff",
     borderRadius: 20,
     boxShadow: theme.shadows[5],
+    [theme.breakpoints.down('sm')]: {
+      height: '25rem',
+      width: '20rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      height: '23rem',
+      width: '17rem'
+    }
   },
   carouselContainer: {
     marginLeft: "20rem",
+    [theme.breakpoints.down('md')]: {
+      marginLeft: 0,
+      height: '30rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      marginLeft: 0,
+      height: '20rem'
+    }
   },
   space: {
-    margin: '0 15rem 10rem'
+    margin: '0 15rem 10rem',
+    [theme.breakpoints.down('sm')]: {
+      margin: '0 8rem 10rem'
+    },
+    [theme.breakpoints.down('xs')]: {
+      margin: '0 4rem 5rem'
+    }
   },
   explore: {
     textTransform: 'none',
     marginRight: '2rem'
   },
   descriptionContainer: {
-    textAlign: 'right'
+    textAlign: 'right',
+    [theme.breakpoints.down('md')]: {
+      textAlign: 'center'
+    }
+  },
+  description: {
+    [theme.breakpoints.down('xs')]: {
+      fontSize: '2.5rem'
+    }
   }
 }))
 
@@ -56,6 +98,8 @@ export default function PromotionalProducts() {
   const classes = useStyles()
 
   const [selectedSlide, setSelectedSlide] = useState(0)
+
+  const matchesMD = useMediaQuery(theme => theme.breakpoints.down('md'))
 
   const data = useStaticQuery(graphql`
     query GetPromo {
@@ -114,21 +158,22 @@ export default function PromotionalProducts() {
     })
   )
 
-  console.log(process.env.GATSBY_STRAPI_URL)
+  // console.log(process.env.GATSBY_STRAPI_URL)
 
   return (
     <Grid
       container
-      justifyContent="space-between"
+      justifyContent={matchesMD ? 'space-around' : "space-between"}
       alignItems="center"
       classes={{ root: classes.mainContainer }}
+      direction={matchesMD ? 'column' : 'row'}
     >
       <Grid item classes={{ root: classes.carouselContainer }}>
         <Carousel slides={slides} goToSlide={selectedSlide} />
       </Grid>
 
       <Grid item classes={{root: classes.descriptionContainer}}>
-        <Typography variant='h2' paragraph>
+        <Typography variant='h2' paragraph classes={{root: classes.description}}>
           {slides[selectedSlide].description}
         </Typography>
         <Button>

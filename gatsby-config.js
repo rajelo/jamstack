@@ -7,6 +7,7 @@ module.exports = {
     author: `@gatsbyjs`,
     siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
   },
+  flags: { PRESERVE_WEBPACK_CACHE: false },
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-image`,
