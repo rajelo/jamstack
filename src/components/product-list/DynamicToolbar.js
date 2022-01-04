@@ -14,7 +14,15 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function DynamicToolbar({ filterOptions, name, description }) {
+export default function DynamicToolbar({
+  filterOptions,
+  setFilterOptions,
+  name,
+  description,
+  layout,
+  setLayout,
+  setPage,
+}) {
   const classes = useStyles()
 
   const [option, setOption] = useState(null)
@@ -25,9 +33,16 @@ export default function DynamicToolbar({ filterOptions, name, description }) {
         option={option}
         setOption={setOption}
         filterOptions={filterOptions}
+        setFilterOptions={setFilterOptions}
       />
       {option === null && (
-        <DescriptionContainer name={name} description={description} />
+        <DescriptionContainer
+          layout={layout}
+          setLayout={setLayout}
+          name={name}
+          description={description}
+          setPage={setPage}
+        />
       )}
     </Grid>
   )

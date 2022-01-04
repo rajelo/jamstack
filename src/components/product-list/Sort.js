@@ -3,27 +3,25 @@ import {
   Grid,
   Typography,
   IconButton,
-  makeStyles,
   Chip,
+  makeStyles,
+  useMediaQuery,
 } from "@material-ui/core"
 
 import sort from "../../images/Icons/sort.svg"
 import close from "../../images/Icons/close-outline.svg"
 
 const useStyles = makeStyles(theme => ({
-  chipRoot: {
-    backgroundColor: theme.palette.secondary.main,
-  },
-  chipLabel: {
-    ...theme.typography.body1,
-    color: "#fff",
-    fontWeight: 500,
+  chipContainer: {
+    [theme.breakpoints.down("md")]: {
+      margin: "0.5rem",
+    },
   },
 }))
 
 export default function Sort({ setOption }) {
   const classes = useStyles()
-
+  const matchesXS = useMediaQuery(theme => theme.breakpoints.down("xs"))
   const sortOptions = [
     { label: "A-Z" },
     { label: "Z-A" },
@@ -43,13 +41,19 @@ export default function Sort({ setOption }) {
       </Grid>
 
       <Grid item xs>
-        <Grid container justifyContent="space-evenly">
+        <Grid
+          container
+          direction={matchesXS ? "column" : "row"}
+          justifyContent={matchesXS ? "center" : "space-evenly"}
+          alignItems={matchesXS ? "center" : undefined}
+        >
           {sortOptions.map(option => (
-            <Grid item key={option.label}>
-              <Chip
-                label={option.label}
-                classes={{ root: classes.chipRoot, label: classes.chipLabel }}
-              />
+            <Grid
+              item
+              key={option.label}
+              classes={{ root: classes.chipContainer }}
+            >
+              <Chip label={option.label} />
             </Grid>
           ))}
         </Grid>
