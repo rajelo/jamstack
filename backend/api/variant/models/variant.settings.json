@@ -9,10 +9,6 @@
     "timestamps": true
   },
   "attributes": {
-    "size": {
-      "type": "string",
-      "required": false
-    },
     "color": {
       "type": "string",
       "required": true
