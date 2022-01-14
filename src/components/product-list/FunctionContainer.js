@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid, Typography, makeStyles, IconButton } from "@material-ui/core"
+import { Grid, makeStyles, IconButton } from "@material-ui/core"
 
 import Sort from "./Sort"
 import Filter from "./Filter"
@@ -22,6 +22,8 @@ export default function FunctionContainer({
   setFilterOptions,
   option,
   setOption,
+  sortOptions,
+  setSortOptions,
 }) {
   // passing option state to customize description container, when filter or sort is selected
   const classes = useStyles({ option })
@@ -29,7 +31,13 @@ export default function FunctionContainer({
   const content = () => {
     switch (option) {
       case "sort":
-        return <Sort setOption={setOption} />
+        return (
+          <Sort
+            setOption={setOption}
+            sortOptions={sortOptions}
+            setSortOptions={setSortOptions}
+          />
+        )
 
       case "filter":
         return (

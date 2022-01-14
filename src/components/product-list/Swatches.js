@@ -1,5 +1,5 @@
 import React from "react"
-import { Grid, Typography, makeStyles, Button } from "@material-ui/core"
+import { Grid, makeStyles, Button } from "@material-ui/core"
 import clsx from "clsx"
 
 const useStyles = makeStyles(theme => ({

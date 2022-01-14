@@ -6,6 +6,7 @@ import Rating from "../home/Rating"
 import Sizes from "./Sizes"
 import Swatches from "./Swatches"
 import QtyButton from "./QtyButton"
+import { getStockDisplay } from "../product-detail/ProductInfo"
 
 // we have to destructure imported function because it is not exported with default keyword
 import { colorIndex } from "./ProductFrameGrid"
@@ -59,6 +60,8 @@ export default function ProductFrameList({
   selectedColor,
   setSelectedSize,
   setSelectedColor,
+  hasStyles,
+  stock,
 }) {
   const classes = useStyles()
 
@@ -68,6 +71,11 @@ export default function ProductFrameList({
     imageIndex !== -1
       ? product.node.variants[imageIndex].images
       : variant.images
+
+  const selectedVariant =
+    imageIndex === -1 ? product.node.variants.indexOf(variant) : imageIndex
+
+  const stockDisplay = getStockDisplay(stock, selectedVariant)
 
   return (
     <Grid item container>
@@ -84,9 +92,15 @@ export default function ProductFrameList({
             item
             key={image.url}
             component={Link}
-            to={`/${product.node.category.name.toLowerCase()}/${product.node.name
-              .split(" ")[0]
-              .toLowerCase()}`}
+            to={
+              hasStyles
+                ? `/${product.node.category.name.toLowerCase()}/${product.node.name
+                    .split(" ")[0]
+                    .toLowerCase()}?style=${variant.style}`
+                : `/${product.node.category.name.toLowerCase()}/${product.node.name
+                    .split(" ")[0]
+                    .toLowerCase()}`
+            }
           >
             <img
               src={process.env.GATSBY_STRAPI_URL + image.url}
@@ -110,9 +124,15 @@ export default function ProductFrameList({
           container
           direction="column"
           component={Link}
-          to={`/${product.node.category.name.toLowerCase()}/${product.node.name
-            .split(" ")[0]
-            .toLowerCase()}`}
+          to={
+            hasStyles
+              ? `/${product.node.category.name.toLowerCase()}/${product.node.name
+                  .split(" ")[0]
+                  .toLowerCase()}?style=${variant.style}`
+              : `/${product.node.category.name.toLowerCase()}/${product.node.name
+                  .split(" ")[0]
+                  .toLowerCase()}`
+          }
         >
           <Grid item>
             <Typography variant="h4">
@@ -130,7 +150,7 @@ export default function ProductFrameList({
           </Grid>
           <Grid item>
             <Typography variant="h3" classes={{ root: classes.stock }}>
-              12 currently in Stock
+              {stockDisplay}
             </Typography>
           </Grid>
         </Grid>
@@ -153,7 +173,7 @@ export default function ProductFrameList({
           />
         </Grid>
 
-        <QtyButton />
+        <QtyButton stock={stock} selectedVariant={selectedVariant} />
       </Grid>
     </Grid>
   )

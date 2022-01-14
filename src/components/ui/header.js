@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
   },
   logo: {
     [theme.breakpoints.down("xs")]: {
-      fontSize: '3rem',
+      fontSize: "3rem",
     },
   },
   logoText: {
@@ -46,10 +46,10 @@ const useStyles = makeStyles(theme => ({
   icon: {
     height: "2.5rem",
     width: "2.5rem",
-    [theme.breakpoints.down('xs')]: {
-      height: '2rem',
-      width: '2rem'
-    }
+    [theme.breakpoints.down("xs")]: {
+      height: "2rem",
+      width: "2rem",
+    },
   },
   drawer: {
     backgroundColor: theme.palette.primary.main,
@@ -68,11 +68,12 @@ export default function Header({ categories }) {
   const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent)
 
   const activeIndex = () => {
-    const pathname = typeof window !== "undefined" ? window.location.pathname : ""
+    const pathname =
+      typeof window !== "undefined" ? window.location.pathname : ""
     const found = routes.indexOf(
       routes.filter(
         ({ node: { name, link } }) =>
-          (link || `/${name.toLowerCase()}`) === pathname
+          (link || `/${name.toLowerCase()}`) === `/${pathname.split("/")[1]}`
       )[0]
     )
 
@@ -147,14 +148,14 @@ export default function Header({ categories }) {
   ]
 
   return (
-    <AppBar color="transparent" elevation={0} position='static'>
+    <AppBar color="default" elevation={2} position="sticky">
       <Toolbar disableGutters>
         <Button
           component={Link}
           to="/"
           classes={{ root: classes.logoContainer }}
         >
-          <Typography variant="h1" classes={{root: classes.logo}}>
+          <Typography variant="h1" classes={{ root: classes.logo }}>
             <span className={classes.logoText}>VAR</span> X
           </Typography>
         </Button>

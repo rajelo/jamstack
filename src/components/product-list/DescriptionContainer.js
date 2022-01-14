@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import {
   Grid,
   Typography,
@@ -82,7 +82,6 @@ export default function DescriptionContainer({
   description,
   layout,
   setLayout,
-  setPage,
 }) {
   const classes = useStyles()
   const matchesMD = useMediaQuery(theme => theme.breakpoints.down("md"))
@@ -90,7 +89,6 @@ export default function DescriptionContainer({
   // when changing the layout I have to set it to page 1, because they have different products per page
   // and therefore different number of pages
   const changeLayout = option => {
-    setPage(1)
     setLayout(option)
   }
 

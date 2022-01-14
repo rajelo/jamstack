@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import {
   Grid,
   Typography,
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     // marginTop: "2.5rem",
   },
   editButtons: {
-    height: "1.8rem",
+    height: "1.75rem",
     borderRadius: 0,
     backgroundColor: theme.palette.secondary.main,
     borderLeft: "2px solid #fff",
@@ -62,10 +62,30 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-export default function QtyButton() {
+export default function QtyButton({ stock, selectedVariant }) {
   const classes = useStyles()
 
   const [qty, setQty] = useState(1)
+
+  const handleChange = direction => {
+    if (qty === stock[selectedVariant].qty && direction === "up") {
+      return null
+    } else if (qty === 1 && direction === "down") {
+      return null
+    } else {
+      const newQty = direction === "up" ? qty + 1 : qty - 1
+      setQty(newQty)
+    }
+  }
+
+  useEffect(() => {
+    if (stock === null || stock === -1) {
+      // from useEffect I can't return null, but I can return undefined
+      return undefined
+    } else if (qty > stock[selectedVariant].qty) {
+      setQty(stock[selectedVariant].qty)
+    }
+  }, [stock, selectedVariant])
 
   return (
     <Grid item>
@@ -78,7 +98,7 @@ export default function QtyButton() {
 
         <ButtonGroup orientation="vertical">
           <Button
-            onClick={() => setQty(qty + 1)}
+            onClick={() => handleChange("up")}
             classes={{ root: classes.editButtons }}
           >
             <Typography
@@ -89,7 +109,7 @@ export default function QtyButton() {
             </Typography>
           </Button>
           <Button
-            onClick={() => setQty(qty - 1)}
+            onClick={() => handleChange("down")}
             classes={{ root: clsx(classes.editButtons, classes.minusButton) }}
           >
             <Typography

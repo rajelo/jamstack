@@ -21,7 +21,8 @@ export default function DynamicToolbar({
   description,
   layout,
   setLayout,
-  setPage,
+  sortOptions,
+  setSortOptions,
 }) {
   const classes = useStyles()
 
@@ -34,6 +35,8 @@ export default function DynamicToolbar({
         setOption={setOption}
         filterOptions={filterOptions}
         setFilterOptions={setFilterOptions}
+        sortOptions={sortOptions}
+        setSortOptions={setSortOptions}
       />
       {option === null && (
         <DescriptionContainer
@@ -41,7 +44,6 @@ export default function DynamicToolbar({
           setLayout={setLayout}
           name={name}
           description={description}
-          setPage={setPage}
         />
       )}
     </Grid>

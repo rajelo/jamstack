@@ -1,8 +1,10 @@
-import React, { useState } from "react"
-import { Grid, Typography, makeStyles, useMediaQuery } from "@material-ui/core"
+import React, { useState, useEffect } from "react"
+import { Grid, makeStyles, useMediaQuery } from "@material-ui/core"
+import { useQuery } from "@apollo/client"
 
 import ProductFrameGrid from "./ProductFrameGrid"
 import ProductFrameList from "./ProductFrameList"
+import { GET_DETAILS } from "../../apollo/queries"
 
 const useStyles = makeStyles(theme => ({
   productContainer: {
@@ -54,10 +56,10 @@ const useStyles = makeStyles(theme => ({
 
 export default function ListOfProducts({
   products,
+  content,
   layout,
   page,
   productsPerPage,
-  filterOptions,
 }) {
   const classes = useStyles({ layout })
   const matchesSM = useMediaQuery(theme => theme.breakpoints.down("sm"))
@@ -65,100 +67,68 @@ export default function ListOfProducts({
   const FrameHelper = ({ Frame, product, variant }) => {
     const [selectedSize, setSelectedSize] = useState(null)
     const [selectedColor, setSelectedColor] = useState(null)
+    const [selectedVariant, setSelectedVariant] = useState(null)
+    const [stock, setStock] = useState(null)
+
+    const { loading, error, data } = useQuery(GET_DETAILS, {
+      variables: { id: product.node.strapiId },
+    })
+
+    useEffect(() => {
+      if (error) {
+        setStock(-1)
+      } else if (data) {
+        setStock(data.product.variants)
+      }
+    }, [error, data])
+
+    useEffect(() => {
+      if (selectedSize === null) return undefined
+      setSelectedColor(null)
+      // find will return actual variant object
+      const newVariant = product.node.variants.find(
+        item =>
+          item.size === selectedSize &&
+          item.style === variant.style &&
+          item.color === colors[0]
+      )
+      setSelectedVariant(newVariant)
+    }, [selectedSize])
 
     let sizes = []
     let colors = []
 
-    product.node.variants.map(variant => {
-      sizes.push(variant.size)
-      colors.push(variant.color)
+    product.node.variants.map(item => {
+      sizes.push(item.size)
+
+      if (
+        !colors.includes(item.color) &&
+        item.size === (selectedSize || variant.size) &&
+        item.style === variant.style
+      ) {
+        colors.push(item.color)
+      }
     })
+
+    const hasStyles = product.node.variants.some(
+      variant => variant.style !== null
+    )
 
     return (
       <Frame
         sizes={sizes}
         colors={colors}
-        selectedSize={selectedSize}
+        selectedSize={selectedSize || variant.size}
         selectedColor={selectedColor}
         setSelectedSize={setSelectedSize}
         setSelectedColor={setSelectedColor}
-        variant={variant}
+        variant={selectedVariant || variant}
         product={product}
+        hasStyles={hasStyles}
+        stock={stock}
       />
     )
   }
-
-  // slicing for pagination
-  let content = []
-  products.map((product, i) =>
-    product.node.variants.map(variant => content.push({ product: i, variant }))
-  )
-
-  let isFiltered = false
-  // master list of active filters: { Size: [{label: 'S'}, {label: 'M'}], Style: [{label: 'Male'}] }
-  let filters = {}
-  let filteredProducts = []
-
-  // implemented for filtering the products
-
-  Object.keys(filterOptions)
-    .filter(option => filterOptions[option] !== null)
-    .map(option => {
-      filterOptions[option].forEach(value => {
-        if (value.checked) {
-          isFiltered = true
-
-          if (filters[option] === undefined) {
-            filters[option] = []
-          }
-
-          if (!filters[option].includes(value)) {
-            filters[option].push(value)
-          }
-
-          content.forEach(item => {
-            if (option === "Color") {
-              if (
-                item.variant.colorLabel === value.label &&
-                !filteredProducts.includes(item)
-              ) {
-                filteredProducts.push(item)
-              }
-            } else if (
-              item.variant[option.toLowerCase()] === value.label &&
-              !filteredProducts.includes(item)
-            ) {
-              filteredProducts.push(item)
-            }
-          })
-        }
-      })
-    })
-
-  Object.keys(filters).forEach(filter => {
-    filteredProducts = filteredProducts.filter(item => {
-      let valid
-
-      filters[filter].some(value => {
-        if (filter === "Color") {
-          if (item.variant.colorLabel === value.label) {
-            valid = item
-          }
-        } else if (item.variant[filter.toLowerCase()] === value.label) {
-          valid = item
-        }
-      })
-
-      return valid
-    })
-  })
-
-  if (isFiltered) {
-    content = filteredProducts
-  }
-
-  // console.log(filteredProducts)
-  // console.log(content)
 
   return (
     <Grid
