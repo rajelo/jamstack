@@ -72,6 +72,11 @@ const theme = createTheme({
       fontSize: "1.5rem",
       color: white,
     },
+    body3: {
+      fontFamily: "Montserrat",
+      fontSize: "1rem",
+      color: white,
+    },
   },
   overrides: {
     MuiChip: {
@@ -82,7 +87,7 @@ const theme = createTheme({
         fontFamily: "Montserrat",
         fontSize: "1.5rem",
         color: "#fff",
-        fontWeight: 500,
+        fontWeight: 400,
       },
     },
   },

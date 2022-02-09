@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
   },
   tab: {
     ...theme.typography.body1,
+    fontWeight: "500",
   },
   tabs: {
     marginLeft: "auto",

@@ -7,7 +7,7 @@ module.exports = {
     author: `@gatsbyjs`,
     siteUrl: `https://gatsbystarterdefaultsource.gatsbyjs.io/`,
   },
-  flags: { PRESERVE_WEBPACK_CACHE: false },
+  flags: { PRESERVE_WEBPACK_CACHE: true },
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-image`,
@@ -16,9 +16,12 @@ module.exports = {
       resolve: "gatsby-plugin-web-font-loader",
       options: {
         google: {
-          families: ['Philosopher:i7:latin', 'Montserrat:n6,n5,n4,n3:latin']
-        }
-      }
+          families: [
+            "Philosopher:700:latin",
+            "Montserrat:700,600,500,400,300:latin",
+          ],
+        },
+      },
     },
     {
       resolve: `gatsby-source-strapi`,

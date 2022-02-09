@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core"
 import clsx from "clsx"
 
-import background from "../../images/Icons/toolbar-background.svg"
+import background from "../../images/Icons/repeating-smallest.svg"
 import ListIcon from "../../images/List"
 import GridIcon from "../../images/Grid"
 
@@ -33,9 +33,11 @@ const useStyles = makeStyles(theme => ({
   mainContainer: {
     padding: "3rem",
     backgroundImage: `url(${background})`,
-    backgroundSize: "cover",
+    // backgroundSize: "cover",
     backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
+    // backgroundRepeat: "no-repeat",
+    // for performance optimization - repeat small image
+    backgroundRepeat: "repeat",
     position: "relative",
     [theme.breakpoints.down("xs")]: {
       padding: "3rem 0",
